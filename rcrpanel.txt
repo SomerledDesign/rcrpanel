@@ -1,0 +1,87 @@
+/** Remember all dimensions start at bottom left!
+/** So a panel measuring:
+/**   X     Y
+/**  100 x 100 mm 
+/** would have 0 100 as it's top left corner,
+/** and similarly 100 0 as its bottom right corner.
+/** Note that '/*' and '/**' mark comments at the beginning
+/** of a line. At the end of a line after the command 
+/** and data they aren't technically required as the 
+/** program has stopped reading the line by that point.
+
+/** Front Panel Size **/
+Panel = 140 114
+Background = 0xffffff
+
+/** Volume Control **/
+ControlSmall = 105.0 101.0
+Dial = 105.0 101.0
+Radius = 6.8
+StartingIndicator = 0
+IncrementPerBigTick = 5
+NumTicks = 11
+BigPer = 5
+SizeTicks = 0.57
+SizeBig = 1.57
+ColorCircle = 0x804000
+SizeFont = 3.0
+Text = 105.0 87.0 3.0 0x804000 Aicklebiter
+Volume
+
+/** Speed Control **/
+ControlSmall = 35.0 101.0
+Dial = 35.0 101.0
+Radius = 6.8
+Span = 270
+StartingIndicator = 5
+IncrementPerBigTick = 5
+NumTicks = 31
+BigPer = 5
+SizeTicks = 2.5
+SizeBig = 3.75
+ColorCircle = 0x804000
+SizeFont = 2.2
+Text = 35.0 87.0 3.0 0x804000 Aicklebiter
+Speed
+
+/** LCD Mounting Holes **/
+ControlTiny = 118 71.5	/** 	Top Right 	   **/
+ControlTiny = 118 24	/** 	Bottom Right   **/
+ControlTiny = 22 71.5	/** 	Top Left 	   **/	
+ControlTiny = 22 24		/** 	Bottom Left    **/	
+
+/** LCD Window **/
+Rectangle = 44.00 47.70 62 16.2
+
+/** Button through holes and text labels **/
+ControlTiny = 44.5 25.8		/**   CMD Button   **/
+Text = 44.5 15.8 2.4 0x2020C0 Inconsolata-Bold
+Command
+/** A square cutout for the Command button **/
+CenterRectangle = 44.5 25.8 10 10
+ControlTiny = 64.83 25.8	/**   Message 1    **/
+Text = 64.3 15.8 2.4 0x804000 Inconsolata-Bold
+Memory 1
+ControlTiny = 85.16 25.8	/**   Message 2    **/
+Text = 85.16 15.8 2.4 0x804000 Inconsolata-Bold
+Memory 2
+ControlTiny = 105.49 25.8	/**   Message 3    **/
+Text = 105.49 15.8 2.4 0x804000 Inconsolata-Bold
+Memory 3
+
+/** LED Through Holes and text labels **/
+ControlMicro = 32.5 67.8
+Text = 32.5 62.8 2.4 0xFF0000 Inconsolata-Bold
+XMIT
+ControlMicro = 32.5 55.8
+Text = 32.5 50.8 2.4 0x2020C0 Inconsolata-Bold
+CMD Mode
+ControlMicro = 32.5 43.8
+Text = 32.5 38.8 2.4 0x804000 Inconsolata-Bold
+UNKN
+	
+/** Branding and Identification **/
+Text = 64 78 8 0x804000 Arial-BoldItalicMT
+K3NG
+Text = 84 68 8 0x804000 Arial-BoldItalicMT
+Keyer
