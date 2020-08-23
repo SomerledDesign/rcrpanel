@@ -1,0 +1,85 @@
+rcrpanel
+
+Hokay guys, this one is ugly enough that it needs some dox.
+
+The program reads a text script file and outputs PostScript to stdout.
+The lines in the script file are (mostly) of the form:
+
+keyword space equals space stuff
+
+It's pretty picky about stuff like spelling and case and all that.
+Most of the Dial keywords work, but there are a bunch of others.  The
+following are the 'normal' keywords:
+
+ControlLarge = <x> <y>    For 1/4" shaft pots etc.
+ControlPhone = <x> <y>    for 1/4" phone jacks
+ControlLED = <x> <y>      for 5mm LED holders
+ControlSmall = <x> <y>    for 3.5mm phone jacks
+ControlTiny = <x> <y>     for 2.5mm phone jacks
+ControlMicro = <x> <y>    for 3 mm LED holes
+Rectangle = <x> <y> <width> <height> for cutouts
+CenterRectangle = <x> <y> <width> <height> for cutouts
+Panel = <x> <y>           describes the size of the panel
+Background = <hexcolor>   sets the background color for the panel
+
+A few specials:
+
+Reverse                   no arguments, reverses the result.  This
+                          is useful for printing on film so that the
+                          actual printing is protected.  This is NOT
+                          a toggle, 1 thru n appearances of Reverse
+                          cause the entire result to be reversed.
+
+Text = <x> <y> <s> <hexcolor> <f>    This one is unique because it
+                          is followed by a line of text which will
+                          be displayed at the specified location,
+                          size and font.  (Your PostScript device
+                          must recognize the font.)  Another little
+                          quirk, the y dimension references the bottom
+                          of the text, but the x dimension, the center.
+                          I thought this better for centering the
+                          annotation over controls.
+
+Dial = <x> <y>            This is a little unique because it must
+                          precede any dial parameters.  Each time
+                          a Dial appears, successive dial params
+                          apply to the new dial.
+
+Dial keywords are the same as the Dial program: Radius, Span,
+StartAngle, NumTicks, BigPer, SizeTicks, SizeBig, StartingIndicator,
+IncrementPerBigTick, SizeFont, ColorCircle, ColorTickMarks,
+ColorBigTickMarks, ColorText.  These parameters are errors unless
+there was at least one Dial command earlier in the script.
+
+If you add a Dial command with no parameters, the following defaults
+are used:
+
+    Radius              10 mm
+    Span                270 degrees
+    StartAngle          0 degrees
+    NumTicks            81
+    BigPer              10
+    SizeTicks           1 mm
+    SizeBig             4 mm
+    ColorCircle         Black
+    ColorTickMarks      Black
+    ColorBigTickMarks   Black
+    ColorText           Black
+    SizeFont            1.5 mm
+    StartingIndicator   14.0
+    IncrementPerBigTick 0.01;
+
+All measurements are in millimeters.  Measurements are from the lower
+left corner of the panel (except obviously font heights and radii.)
+
+rcrpanel.txt is an example but doesn't use all the commands.
+
+Compiled in limits ... if you compile this for DOS or some other
+memory-deficient OS, you may want to reduce some of these.  I can't
+imagine a panel with more of these (well, maybe controls if you REALLY
+like LEDs):
+
+  Dials          20
+  Controls       50
+  Text strings   50
+  Rectangles     50
