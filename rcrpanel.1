@@ -1,0 +1,243 @@
+.TH rcrpanel 1 "27 Apr 2018"
+.SH NAME
+rcrpanel \- Create a PostScript file of a rcrpanel from a script
+.SH SYNOPSIS
+.B rcrpanel
+.I filename
+.LP
+.SH DESCRIPTION
+.LP
+.B rcrpanel
+reads a script file describing a panel and produces a PostScript image of that
+panel on the standard output.
+.SH OPTIONS
+none
+.SH INPUT FILE
+The input file contains lines describing the various controls.  Most lines are of
+the form
+.I Command = something
+where the spaces around the equal sign are significant, and the command itself
+is case-sensitive.
+.LP
+Measurements are in units of millimeters.  Angles are in degrees.  Colors
+are given as 24 bit C style integers where each byte repesents the amount of
+red, green, or blue.
+.SS Commands
+.TP
+\fBReverse\fR - 
+This command takes no arguments.  If this command appears anywhere
+in the input file, the resulting PostScript will be flipped left to right (for
+printing on the reverse side of transparency material).
+
+.TP
+\fBControlLarge\fR - 
+This is used for large diameter controls such as large pots
+and the like.  It takes 2 values after the equal sign representing the position
+of the control on the panel.
+
+.TP
+\fBControlPhone\fR - 
+This is used for 1/4" phone jacks and similar controls.  The
+2 values after the equal sign represent the position on the panel.
+
+.TP
+\fBControlLED\fR - 
+This command generates an outline for a 5 mm LED.  Like the other
+control commands, it takes 2 values, the X and Y positions on the panel of the
+center of the LED.
+
+.TP
+\fBControlSmall\fR -
+This command generates an outline for a 3.5 mm phone jack.  The two values are
+the X and Y positions of the jack on the panel.
+
+.TP
+\fBControlTiny\fR -
+This command generates an outline for a 2.5 mm phone jack.  The two values are
+the X and Y positions of the jack on the panel.
+
+.TP
+\fBRectangle\fR -
+This command defines the size of a rectangle and is used for cutouts such as LCDs
+and connectors or switches.  The first two values define the X0 and Y0 coordinates
+of the bottom left corner of the rectangle.  The next 2 dimensions are the width
+and height of the rectangle.
+
+.TP
+\fBCenterRectangle\fR -
+This command is the duplicate of 
+.I Rectangle
+with the change that the coordinates given are the center of the rectangle, not
+the lower left corner.  The first two values define center coordinates of the 
+rectangle.  The next 2 dimensions are the width and height of the rectangle.
+This is useful for placing a rectangle where the center is known.
+
+.TP
+\fBPanel\fR -
+This command defines the size of the panel.  The 2 dimensions are the width and
+height of the panel.
+
+.TP
+\fBBackground\fR -
+This command takes a single color following the equal sign.  The entire panel
+will be filled with this color.
+
+.TP
+\fBText\fR -
+This command is somewhat different from the others.  After the equal sign, 
+it takes 3 floating point numbers, a color, and a text string.  The fist 2 floating point
+numbers are the X, Y position of the text on the panel.  The third number is the
+height of the text.  The color represents the color of the text, and the text string
+represents the font to be used.  No checking is done before preparing the PostScript;  you
+are responsible for ensuring that the font is available on your printer.
+
+This command is then followed by another line containing the text to be displayed.
+
+.TP
+\fBDial\fR -
+This command introduces a new dial.  The 
+.B Dial 
+command describes the X,Y center
+of the dial.  The following commands then further refine the details of this
+particular dial.  This relationship between the
+.B Dial
+command and it's successors is the only place where the order of the commands
+within the file matters.
+
+.TP
+\fBRadius\fR -
+This command takes a single value which is the radius of the circle which
+forms the inside of the tick marks.
+This command refers to the current 
+.B Dial 
+command.
+
+.TP
+\fBSpan\fR -
+This command describes the angle over which the control may operate.  Typically,
+this would be 270 for a potentiometer and 180 for a variable capacitor.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBNumTicks\fR -
+This command describes the total number of tick marks, large and small,
+to be drawn.  This is usually an odd number since the starting and ending
+values are counted.  Typically this will be 11, 101, or a similar number.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBBigPer\fR -
+This command tells the program how many small tick marks there are per
+large tick mark.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBSizeTicks\fR -
+This command describes the length of the small tick marks.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBSizeBig\fR -
+This command describes the length of the large tick marks.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBStartingIndicator\fR -
+This command describes the value to be placed on the furthest
+counterclockwise large tick mark.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBIncrementPerBigTick\fR -
+This command tells rcrpanel how much to increment the value in 
+.B StartingIndicator
+for each succeding large tick mark.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBSizeFont\fR -
+This command describes how large to make the annotation on the ticks.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBColorCircle\fR -
+This command takes a single color as an argument, which is used to draw
+the inner circle.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBColorTickMarks\fR -
+This command permits setting the color to draw the small tick marks.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBColorBigTickMarks\fR -
+This command permits setting the color to draw the large tick marks.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBColorText\fR -
+This command accepts a single color which will be used for the annotation.
+This command refers to the current 
+.B Dial 
+command.
+
+
+.TP
+\fBStartAngle\fR -
+By default,
+.B rcrpanel
+arranges dials so the dead spot on the control is straight down.  This is the desired
+behavior in almost all cases.  However, sometimes you may want to rotate a control to
+some other orientation.  The single argument to
+.B StartAngle
+is the number of degrees clockwise to rotate the control.
+This command refers to the current 
+.B Dial 
+command.
+
+.SH LIMITATIONS
+Current compiled in limits are 20 dials, 50 controls and 50 text strings.
+Strings are limited to 127 characters and font names may be no more than
+31 characters long.
+
+.SH AUTHORS
+John J. McDonough, WB8RCR; Kevin R. Murphy, W8VOS
+.SH BUGS
+None known
+.PP
+.B rcrpanel 
+is still lacking the ability to draw random straight lines but it does rectangles now.
